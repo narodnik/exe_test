@@ -6,7 +6,11 @@ use std::time::Duration;
 
 async fn bang(executor: &Executor<'_>) {
     let server_task = executor.spawn(async {
-        executor.spawn(async { println!("hello"); }).await;
+        executor
+            .spawn(async {
+                println!("hello");
+            })
+            .await;
     });
 }
 
@@ -44,7 +48,8 @@ async fn pingpong(ex: &Executor<'_>) -> io::Result<()> {
         //thread::sleep(Duration::from_secs(5));
         sleep(Duration::from_secs(5)).await;
         println!("Debug 2");
-    }).await;
+    })
+    .await;
 
     // This cancels the running tasks
     task1.cancel().await;
