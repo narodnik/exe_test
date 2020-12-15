@@ -2,8 +2,13 @@ use async_channel::unbounded;
 use async_executor::Executor;
 use easy_parallel::Parallel;
 use smol::{future, io, Timer};
-use std::thread;
 use std::time::Duration;
+
+async fn bang(executor: &Executor<'_>) {
+    let server_task = executor.spawn(async {
+        executor.spawn(async { println!("hello"); }).await;
+    });
+}
 
 async fn sleep(dur: Duration) {
     Timer::after(dur).await;
